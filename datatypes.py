@@ -1,84 +1,55 @@
 from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum
+
+# --- Constants ---
+WEEKDAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+SALUTATIONS = ["Prof.", "Dr.", "Dipl.", "Hr.", "Fr."]
+CATEGORY_EXERCISES = ["-Ü", "Ü-"]
+CATEGORY_LAB = ["-ÜL", "ÜL-"]
 
 
-class Department(Enum):
-    INFO_ELEKTRO = 1
-    AGRAR = 2
-    MASCHIENEN = 3
-    WIRTSCHAFT = 4
-    MEDIEN_BAU = 5
-    SOZIAL_ARBEIT = 6
-
-
-class EventType(Enum):
-    VORLESUNG = 1
-    UEBUNG = 2
-    LABOR = 3
-
-
-class Course(Enum):
-    ELEKTROTECHNIK = 4
-    INFORMATIK = 7
-    MECHATRONIK = 11
-    MEDIENINGINEUR = 12
-    WIRTSCHAFTSINGIUER = 22
+# --- Data ---
 
 
 @dataclass
-class Room:
-    building: int
-    floor: int
-    room: int
-
-
-@dataclass
-class Lecturer:
-    name: str
-    email: str = None
-    phone: str = None
-    fax: str = None
-    office: Room = None
-    department: Department = None
-    description: str = ""
-
-
-@dataclass
-class RawEvent:
-    weeknums: list
-    day: str
-    year: int
-    content: str
-    start: str
-    end: str
-    course: Course
+class Plan:
+    title: str
     semester: int
-    group: str
+    group: int
+    modules: list
+
+
+@dataclass
+class Modul:
+    title: str
+    category: str
+    events: list
 
 
 @dataclass
 class Event:
-    title: str
-    department: Department
-    eventtype: EventType
-    lecturer: Lecturer
-    room: Room
     start: datetime
     end: datetime
-    course: Course
-    semester: int
-    group: int
+    rooms: list
+
+
+# --- Raw Data ---
 
 
 @dataclass
-class StackedEvent:
+class Block:
+    year: int
+    weeknums: list
+    day: str
+    start: str
+    end: str
+    content: str
+
+
+@dataclass
+class RawEvent:
     title: str
-    department: Department
-    eventtype: EventType
-    lecturer: Lecturer
-    room: Room
-    dates: list[(datetime, datetime)]
-    course: Course
-    semesters: list[int]
-    groups: list[int]
+    rooms: list
+    category: str
+    start: datetime
+    end: datetime
